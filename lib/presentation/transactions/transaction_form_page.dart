@@ -14,7 +14,8 @@ class TransactionFormPage extends ConsumerStatefulWidget {
   final Transaction? transaction;
 
   @override
-  ConsumerState<TransactionFormPage> createState() => _TransactionFormPageState();
+  ConsumerState<TransactionFormPage> createState() =>
+      _TransactionFormPageState();
 }
 
 class _TransactionFormPageState extends ConsumerState<TransactionFormPage> {
@@ -67,8 +68,16 @@ class _TransactionFormPageState extends ConsumerState<TransactionFormPage> {
           children: [
             SegmentedButton<String>(
               segments: const [
-                ButtonSegment(value: 'expense', label: Text('Despesa'), icon: Icon(Icons.arrow_upward)),
-                ButtonSegment(value: 'income', label: Text('Receita'), icon: Icon(Icons.arrow_downward)),
+                ButtonSegment(
+                  value: 'expense',
+                  label: Text('Despesa'),
+                  icon: Icon(Icons.arrow_upward),
+                ),
+                ButtonSegment(
+                  value: 'income',
+                  label: Text('Receita'),
+                  icon: Icon(Icons.arrow_downward),
+                ),
               ],
               selected: {_type},
               onSelectionChanged: (Set<String> selected) {
@@ -86,7 +95,9 @@ class _TransactionFormPageState extends ConsumerState<TransactionFormPage> {
                 labelText: 'Valor (R\$)',
                 border: OutlineInputBorder(),
               ),
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               validator: (v) {
                 if (v == null || v.trim().isEmpty) return 'Informe o valor';
                 final n = double.tryParse(v.replaceFirst(',', '.'));
@@ -102,74 +113,102 @@ class _TransactionFormPageState extends ConsumerState<TransactionFormPage> {
                     title: Text('Nenhuma conta. Crie uma conta primeiro.'),
                   );
                 }
-                if (_accountId == null && accounts.isNotEmpty) _accountId = accounts.first.id;
+                if (_accountId == null && accounts.isNotEmpty)
+                  _accountId = accounts.first.id;
                 return DropdownButtonFormField<int>(
-                  value: _accountId,
+                  initialValue: _accountId,
                   decoration: const InputDecoration(
                     labelText: 'Conta',
                     border: OutlineInputBorder(),
                   ),
                   items: accounts
-                      .map((a) => DropdownMenuItem(value: a.id, child: Text(a.name)))
+                      .map(
+                        (a) =>
+                            DropdownMenuItem(value: a.id, child: Text(a.name)),
+                      )
                       .toList(),
                   onChanged: (v) => setState(() => _accountId = v),
                   validator: (v) => v == null ? 'Selecione a conta' : null,
                 );
               },
               loading: () => const LinearProgressIndicator(),
-              error: (e, _) => Text('Erro: $e', style: TextStyle(color: Theme.of(context).colorScheme.error)),
+              error: (e, _) => Text(
+                'Erro: $e',
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
             ),
             const SizedBox(height: 20),
             categoriesAsync.when(
               data: (categories) {
                 if (categories.isEmpty) return const SizedBox.shrink();
-                if (_categoryId == null && categories.isNotEmpty) _categoryId = categories.first.id;
+                if (_categoryId == null && categories.isNotEmpty)
+                  _categoryId = categories.first.id;
                 return DropdownButtonFormField<int>(
-                  value: _categoryId,
+                  initialValue: _categoryId,
                   decoration: const InputDecoration(
                     labelText: 'Categoria',
                     border: OutlineInputBorder(),
                   ),
                   items: categories
-                      .map((c) => DropdownMenuItem(value: c.id, child: Text(c.name)))
+                      .map(
+                        (c) =>
+                            DropdownMenuItem(value: c.id, child: Text(c.name)),
+                      )
                       .toList(),
                   onChanged: (v) => setState(() => _categoryId = v),
                   validator: (v) => v == null ? 'Selecione a categoria' : null,
                 );
               },
               loading: () => const LinearProgressIndicator(),
-              error: (e, _) => Text('Erro: $e', style: TextStyle(color: Theme.of(context).colorScheme.error)),
+              error: (e, _) => Text(
+                'Erro: $e',
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
             ),
             if (_type == 'expense') ...[
               const SizedBox(height: 20),
-              ref.watch(creditCardsFutureProvider).when(
-                data: (cards) {
-                  if (cards.isEmpty) return const SizedBox.shrink();
-                  return DropdownButtonFormField<int>(
-                    value: _creditCardId,
-                    decoration: const InputDecoration(
-                      labelText: 'Cartão de crédito (opcional)',
-                      border: OutlineInputBorder(),
-                    ),
-                    items: [
-                      const DropdownMenuItem<int>(value: null, child: Text('Nenhum')),
-                      ...cards.map((c) => DropdownMenuItem<int>(
-                            value: c.id,
-                            child: Text(c.lastFourDigits != null ? '${c.name} •••• ${c.lastFourDigits}' : c.name),
-                          )),
-                    ],
-                    onChanged: (v) => setState(() => _creditCardId = v),
-                  );
-                },
-                loading: () => const SizedBox.shrink(),
-                error: (_, __) => const SizedBox.shrink(),
-              ),
+              ref
+                  .watch(creditCardsFutureProvider)
+                  .when(
+                    data: (cards) {
+                      if (cards.isEmpty) return const SizedBox.shrink();
+                      return DropdownButtonFormField<int>(
+                        initialValue: _creditCardId,
+                        decoration: const InputDecoration(
+                          labelText: 'Cartão de crédito (opcional)',
+                          border: OutlineInputBorder(),
+                        ),
+                        items: [
+                          const DropdownMenuItem<int>(
+                            value: null,
+                            child: Text('Nenhum'),
+                          ),
+                          ...cards.map(
+                            (c) => DropdownMenuItem<int>(
+                              value: c.id,
+                              child: Text(
+                                c.lastFourDigits != null
+                                    ? '${c.name} •••• ${c.lastFourDigits}'
+                                    : c.name,
+                              ),
+                            ),
+                          ),
+                        ],
+                        onChanged: (v) => setState(() => _creditCardId = v),
+                      );
+                    },
+                    loading: () => const SizedBox.shrink(),
+                    error: (_, __) => const SizedBox.shrink(),
+                  ),
             ],
             const SizedBox(height: 20),
             ListTile(
               title: const Text('Data'),
               subtitle: Text(formatDate(_date)),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: Theme.of(context).colorScheme.outline)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+                side: BorderSide(color: Theme.of(context).colorScheme.outline),
+              ),
               onTap: () async {
                 final picked = await showDatePicker(
                   context: context,
@@ -207,8 +246,11 @@ class _TransactionFormPageState extends ConsumerState<TransactionFormPage> {
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final amount = double.tryParse(_amountController.text.replaceFirst(',', '.')) ?? 0;
-    final note = _noteController.text.trim().isEmpty ? null : _noteController.text.trim();
+    final amount =
+        double.tryParse(_amountController.text.replaceFirst(',', '.')) ?? 0;
+    final note = _noteController.text.trim().isEmpty
+        ? null
+        : _noteController.text.trim();
 
     if (_accountId == null || _categoryId == null) return;
 

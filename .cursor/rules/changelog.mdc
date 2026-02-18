@@ -1,0 +1,36 @@
+---
+description: Always update CHANGELOG.md when making notable project changes
+alwaysApply: true
+---
+
+# Changelog convention
+
+When you make **any notable change** to this project, **update `CHANGELOG.md` in the same change set**.
+
+## When to update
+
+- New features (screens, flows, integrations)
+- Bug fixes or behavioral changes
+- New or removed dependencies
+- Theme, UI, or layout changes
+- New utilities, providers, or project structure
+
+## How to update
+
+- Use the existing format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) (Added / Changed / Fixed).
+- Add entries under the current version (`## [0.1.0]`) and the appropriate section.
+- Be concise but specific (what was added/changed/fixed and where).
+- If introducing a new version, add a new `## [x.y.z] – YYYY-MM-DD` section.
+
+## Example
+
+After adding a new "Export" feature:
+
+```markdown
+### Added
+
+- **Export**
+  - Export transactions to CSV from the Reports screen; file saved to app documents.
+```
+
+Do not leave the changelog outdated after implementing user-requested changes.

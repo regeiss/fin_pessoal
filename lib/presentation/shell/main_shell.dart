@@ -9,6 +9,10 @@ import 'package:fin_pessoal/presentation/budgets/budgets_page.dart';
 import 'package:fin_pessoal/presentation/loans/loans_page.dart';
 import 'package:fin_pessoal/presentation/bills/bills_page.dart';
 import 'package:fin_pessoal/presentation/goals/goals_page.dart';
+import 'package:fin_pessoal/presentation/reports/reports_page.dart';
+import 'package:fin_pessoal/presentation/insights/insights_page.dart';
+import 'package:fin_pessoal/presentation/financial_ai/financial_ai_page.dart';
+import 'package:fin_pessoal/presentation/settings/settings_page.dart';
 import 'package:fin_pessoal/presentation/more/more_page.dart';
 
 class MainShell extends ConsumerStatefulWidget {
@@ -38,6 +42,10 @@ class _MainShellState extends ConsumerState<MainShell> {
     _NavItem(icon: Icons.handshake, label: 'Empréstimos'),
     _NavItem(icon: Icons.receipt_long, label: 'Contas fixas'),
     _NavItem(icon: Icons.flag, label: 'Metas'),
+    _NavItem(icon: Icons.analytics_outlined, label: 'Relatórios'),
+    _NavItem(icon: Icons.lightbulb_outline, label: 'Insights'),
+    _NavItem(icon: Icons.smart_toy_outlined, label: 'IA financeira'),
+    _NavItem(icon: Icons.settings, label: 'Configurações'),
   ];
 
   @override
@@ -62,10 +70,14 @@ class _MainShellState extends ConsumerState<MainShell> {
       const LoansPage(),
       const BillsPage(),
       const GoalsPage(),
+      const ReportsPage(),
+      const InsightsPage(),
+      const FinancialAIPage(),
+      const SettingsPage(),
     ];
 
     if (useTabletLayout) {
-      final railIndex = _currentIndex > 7 ? 0 : _currentIndex;
+      final railIndex = _currentIndex > 11 ? 0 : _currentIndex;
       return Scaffold(
         body: Row(
           children: [
